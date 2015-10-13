@@ -1,0 +1,59 @@
+<div class="field">
+    <div class="value">
+        <a href="javascript:void(0);" class="inline-link" id="langs-show"><i class="icon10 edit"></i><b><i>Переводы</i></b></a>
+    </div>
+</div>
+<div class="block" id="langs" style="display:none">
+    <ul class="tabs">
+        {foreach $langs as $lang}
+        <li data-target="#lang-tab-{$lang}"{if $lang@iteration eq 1} class="selected"{/if}><a>{$lang}</a></li>
+        {/foreach}
+    </ul>
+    {foreach $langs as $lang}
+    <div class="tab-content" id="lang-tab-{$lang}"{if $lang@iteration neq 1} style="display:none"{/if}>
+    <div class="block">
+        <div class="form">
+            <div class="field">
+                <div class="name">Наименование</div>
+                <div class="value"><textarea name="lang_plugin[{$lang}][name]">{$data[$lang].name|default:''|escape}</textarea></div>
+            </div>
+            <div class="field">
+                <div class="name">Meta title</div>
+                <div class="value"><textarea name="lang_plugin[{$lang}][meta_title]">{$data[$lang].meta_title|default:''|escape}</textarea></div>
+            </div>
+            <div class="field">
+                <div class="name">Meta keywords</div>
+                <div class="value"><textarea name="lang_plugin[{$lang}][meta_keywords]">{$data[$lang].meta_keywords|default:''|escape}</textarea></div>
+            </div>
+            <div class="field">
+                <div class="name">Meta description</div>
+                <div class="value"><textarea name="lang_plugin[{$lang}][meta_description]">{$data[$lang].meta_description|default:''|escape}</textarea></div>
+            </div>
+            <div class="field">
+                <div class="name">Описание</div>
+                <div class="value"><textarea name="lang_plugin[{$lang}][description]" class="lang_plugin_redactor">{$data[$lang].description|default:''|escape}</textarea></div>
+            </div>
+        </div>
+    </div>
+</div>
+{/foreach}
+
+</div>
+<script type="text/javascript">
+    $(function() {
+        var langs = $('#langs');
+
+        $('.tabs a', langs).click(function(e){
+            $('li', $(this).closest('ul')).removeClass('selected');
+            var id = $(this).parent().addClass('selected').data('target');
+            $('.tab-content', langs).hide().filter(id).fadeIn();
+            e.preventDefault();
+        });
+        $('.lang_plugin_redactor').redactor();
+
+        $('#langs-show').click(function(e){
+            $('#langs').fadeIn();
+            e.preventDefault();
+        })
+    });
+</script>

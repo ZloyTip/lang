@@ -1,0 +1,61 @@
+<style type="text/css">
+#mainmenu .s-level2 {
+    display:none;
+}
+</style>
+<form method="post">
+{$wa->csrf()}
+<div class="block" id="langs">
+    <ul class="tabs">
+        {foreach $langs as $lang}
+        <li data-target="#lang-tab-{$lang}"{if $lang@iteration eq 1} class="selected"{/if}><a>{$lang}</a></li>
+        {/foreach}
+    </ul>
+    {foreach $langs as $lang}
+
+    <div class="tab-content" id="lang-tab-{$lang}"{if $lang@iteration neq 1} style="display:none"{/if}>
+    <div class="fields block">
+        {foreach $features as $feature}
+        <div class="field">
+            <div class="name bold">
+                {$feature.name}
+            </div>
+            <div class="value">
+                <input type="text" placeholder="{$feature.name|escape}" class="bold" name="lang_plugin[{$lang}][feature][{$feature.id}]" value="{$data[$lang].feature[$feature.id]|default:''|escape}">
+            </div>
+        </div>
+        {foreach $feature.values as $vid => $value}
+        <div class="field">
+            <div class="name" style="padding-left: 10px">
+                {$value}
+            </div>
+            <div class="value">
+                <input type="text" placeholder="{$value|escape}" name="lang_plugin[{$lang}][{$feature.type}][{$vid}]" value="{$data[$lang][$feature.type][$vid]|default:''|escape}">
+            </div>
+        </div>
+        {/foreach}
+        {/foreach}
+    </div>
+    </div>
+
+    {/foreach}
+
+    <div class="field">
+        <div class="value">
+            <input type="submit" class="button green" value="Сохранить">
+        </div>
+    </div>
+</div>
+</form>
+<script type="text/javascript">
+    $(function() {
+        var langs = $('#langs');
+
+        $('.tabs a', langs).click(function(e){
+            $('li', $(this).closest('ul')).removeClass('selected');
+            var id = $(this).parent().addClass('selected').data('target');
+            $('.tab-content', langs).hide().filter(id).fadeIn();
+            e.preventDefault();
+        });
+    });
+</script>
