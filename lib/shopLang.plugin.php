@@ -48,6 +48,24 @@ class shopLangPlugin extends shopPlugin{
     }
 
 
+    public static function getAvailableLanguages()
+    {
+        static $options;
+        if($options !== null) {
+            return $options;
+        }
+        
+        $langs = waLocale::getAll('info');
+
+        $options = array();
+        foreach ($langs as $code => $lang) {
+            $code = substr($code, 0, 2);
+            $options[$code] = ifempty($lang['name'],'').' ('.$code.')';
+        }
+        return $options;
+
+    }
+
     /*
      * HOOK handlers
      */
